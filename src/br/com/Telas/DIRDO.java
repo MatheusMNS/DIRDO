@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dirdo;
+package br.com.Telas;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
