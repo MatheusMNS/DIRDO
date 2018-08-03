@@ -25,8 +25,11 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ProgressIndicator;
 
 /**
  * FXML Controller class
@@ -64,6 +67,9 @@ public class FXMLLoginController implements Initializable {
     private Button btn_conectar;
     
     @FXML
+    private ProgressIndicator progress_conectar;
+    
+    @FXML
     void handleComboAction(ActionEvent event) {
         int index = combo_config.getSelectionModel().getSelectedIndex();
         conexao = conList.get(index);
@@ -75,12 +81,29 @@ public class FXMLLoginController implements Initializable {
     
     @FXML
     void handleConectarAction(ActionEvent event) {
-        boolean conectar; 
-        conectar = conectaServidor();
+        //boolean conectar; 
+        //conectar = conectaServidor();
         
-        if(conectar){
-            
-        }
+        final LoginService lserv = new LoginService();
+
+        //Here you tell your progress indicator is visible only when the service is runing
+        progress_conectar.visibleProperty().bind(lserv.runningProperty());
+        lserv.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                String result = lserv.getValue();   //here you get the return value of your service
+                System.out.println(result);
+            }
+        });
+
+        lserv.setOnFailed(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                //DO stuff on failed
+            }
+        });
+        lserv.restart(); //here you start your service
+
     }
 
     @Override
