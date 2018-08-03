@@ -26,8 +26,8 @@ import org.xml.sax.SAXException;
  */
 public class ConexaoController {
     
-    public void carregarConexao(){
-        String filePath = "br\\com\\arquivos\\config.xml";
+    public List<Conexao> leConexoes(){
+        String filePath = "src\\br\\com\\arquivos\\config.xml";
         File xmlFile = new File(filePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
@@ -35,20 +35,20 @@ public class ConexaoController {
             dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            //System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             NodeList nodeList = doc.getElementsByTagName("conexao");
             //now XML is loaded as Document in memory, lets convert it to Object List
             List<Conexao> conList = new ArrayList<Conexao>();
             for (int i = 0; i < nodeList.getLength(); i++) {
                 conList.add(getConexao(nodeList.item(i)));
             }
-            //lets print Employee list information
-            for (Conexao con : conList) {
-                System.out.println(con.toString());
-            }
+
+            return conList;
         } catch (SAXException | ParserConfigurationException | IOException e1) {
             e1.printStackTrace();
         }
+        
+        return null;
     }
     
      private static Conexao getConexao(Node node) {
@@ -56,7 +56,6 @@ public class ConexaoController {
         Conexao con = new Conexao();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element element = (Element) node;
-            con.setTitulo(getTagValue("titulo", element));
             con.setHost(getTagValue("host", element));
             con.setPorta(Integer.parseInt(getTagValue("porta", element)));
             con.setUsuario(getTagValue("usuario", element));

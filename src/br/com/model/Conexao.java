@@ -10,19 +10,10 @@ package br.com.model;
  * @author matheusm
  */
 public class Conexao {
-    private String titulo;
     private String host;
     private int porta;
     private String usuario;
     private String senha;
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
 
     public String getHost() {
         return host;
@@ -55,5 +46,11 @@ public class Conexao {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    @Override
+    public String toString() {
+        return "" + host + " > " + usuario;
+    }
+    
     
 }

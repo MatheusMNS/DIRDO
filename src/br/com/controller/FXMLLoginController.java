@@ -7,7 +7,11 @@ package br.com.controller;
 
 import br.com.model.Conexao;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,10 +23,13 @@ import javafx.scene.control.TextField;
  *
  * @author matheusm
  */
-public class LoginController implements Initializable {
+public class FXMLLoginController implements Initializable {
 
     @FXML
     private ComboBox<Conexao> combo_config;
+    
+    private List<Conexao> conList = new ArrayList<Conexao>();
+    private ObservableList<Conexao> obConexoes;
     
     @FXML
     private TextField txt_porta;
@@ -41,7 +48,13 @@ public class LoginController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        this.carregaConexoes();
     }    
     
+    public void carregaConexoes(){
+        ConexaoController con = new ConexaoController();
+        conList = con.leConexoes();
+        obConexoes = FXCollections.observableArrayList(conList);
+        combo_config.setItems(obConexoes);
+    }
 }
