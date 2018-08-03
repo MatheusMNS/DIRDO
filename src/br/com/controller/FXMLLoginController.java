@@ -19,17 +19,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
-import com.jcraft.jsch.SftpException;
-import com.jcraft.jsch.SftpProgressMonitor;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.text.Text;
+
+import com.jcraft.jsch.ChannelSftp;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
+
 
 /**
  * FXML Controller class
@@ -42,8 +40,6 @@ public class FXMLLoginController implements Initializable {
     private ObservableList<Conexao> obConexoes;
     private Conexao conexao;
     
-    private JSch jsch;
-    private Session session;
     private ChannelSftp sftpChannel;
     
     private Alert alert;
@@ -70,8 +66,14 @@ public class FXMLLoginController implements Initializable {
     private ProgressIndicator progress_conectar;
     
     @FXML
+    private Text txt_conectar;
+    
+    @FXML
     void handleComboAction(ActionEvent event) {
         int index = combo_config.getSelectionModel().getSelectedIndex();
+        
+        //progress_conectar.setVisible(false);
+        
         conexao = conList.get(index);
         txt_host.setText(conexao.getHost());
         txt_porta.setText(Integer.toString(conexao.getPorta()));
@@ -82,28 +84,42 @@ public class FXMLLoginController implements Initializable {
     @FXML
     void handleConectarAction(ActionEvent event) {
         //boolean conectar; 
+        progress_conectar.setVisible(true);
+        progress_conectar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
         //conectar = conectaServidor();
-        
-        final LoginService lserv = new LoginService();
+        btn_conectar.setDisable(true);
+        txt_conectar.setText("Aguarde...");
+        final LoginServiceThread lst;
+        lst = new LoginServiceThread(txt_host.getText(), Integer.parseInt(txt_porta.getText()), txt_usuario.getText(), txt_senha.getText());
 
         //Here you tell your progress indicator is visible only when the service is runing
-        progress_conectar.visibleProperty().bind(lserv.runningProperty());
-        lserv.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+        //progress_conectar.visibleProperty().bind(lst.runningProperty());
+        lst.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
-                String result = lserv.getValue();   //here you get the return value of your service
-                System.out.println(result);
+                progress_conectar.setVisible(false);
+                txt_conectar.setText("");
+                sftpChannel = lst.getValue();   //here you get the return value of your service
+                System.out.println(sftpChannel.toString());
             }
         });
 
-        lserv.setOnFailed(new EventHandler<WorkerStateEvent>() {
+        lst.setOnFailed(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
-                //DO stuff on failed
+                progress_conectar.setVisible(false);
+                txt_conectar.setText("");
+                
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText("Erro ao tentar ao conectar com o servidor.");
+                alert.setContentText("Por favor, verifique se as informações de conexão estão corretas e tente novamente.");
+                alert.showAndWait();
+                btn_conectar.setDisable(false);
+                txt_conectar.setText("");
             }
         });
-        lserv.restart(); //here you start your service
-
+        lst.start(); //here you start your service
     }
 
     @Override
@@ -116,34 +132,5 @@ public class FXMLLoginController implements Initializable {
         conList = con.leConexoes();
         obConexoes = FXCollections.observableArrayList(conList);
         combo_config.setItems(obConexoes);
-    }
-    
-    public boolean conectaServidor(){
-        try {
-            jsch = new JSch();
-            System.out.println("\nEstabelecendo a Conexão...");
-            session = jsch.getSession(txt_usuario.getText(), txt_host.getText(), Integer.parseInt(txt_porta.getText()));
-            session.setPassword(txt_senha.getText());
-            session.setConfig("StrictHostKeyChecking", "no");
-
-            session.connect();
-            System.out.println("\nConexão estabelecia.");
-            System.out.println("\nCriando Canal SFTP...");
-            sftpChannel = (ChannelSftp) session.openChannel("sftp");
-            sftpChannel.connect();
-            System.out.println("\nCanal SFTP criado.");
-            
-            return true;
-        }
-        catch(Exception e){
-                System.err.print(e);
-                alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao tentar ao conectar com o servidor.");
-                alert.setContentText("Por favor, verifique se as informações de conexão estão corretas e tente novamente.");
-                alert.showAndWait();
-                
-                return false;
-        }
     }
 }
