@@ -20,6 +20,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+import com.jcraft.jsch.SftpProgressMonitor;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 /**
  * FXML Controller class
  *
@@ -30,6 +38,12 @@ public class FXMLLoginController implements Initializable {
     private List<Conexao> conList = new ArrayList<Conexao>();
     private ObservableList<Conexao> obConexoes;
     private Conexao conexao;
+    
+    private JSch jsch;
+    private Session session;
+    private ChannelSftp sftpChannel;
+    
+    private Alert alert;
     
     @FXML
     private ComboBox<Conexao> combo_config;
@@ -48,19 +62,30 @@ public class FXMLLoginController implements Initializable {
 
     @FXML
     private Button btn_conectar;
+    
+    @FXML
+    void handleComboAction(ActionEvent event) {
+        int index = combo_config.getSelectionModel().getSelectedIndex();
+        conexao = conList.get(index);
+        txt_host.setText(conexao.getHost());
+        txt_porta.setText(Integer.toString(conexao.getPorta()));
+        txt_usuario.setText(conexao.getUsuario());
+        txt_senha.setText(conexao.getSenha());
+    }
+    
+    @FXML
+    void handleConectarAction(ActionEvent event) {
+        boolean conectar; 
+        conectar = conectaServidor();
+        
+        if(conectar){
+            
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.carregaConexoes();
-        
-        combo_config.setOnAction(e -> {
-            int index = combo_config.getSelectionModel().getSelectedIndex();
-            conexao = conList.get(index);
-            txt_host.setText(conexao.getHost());
-            txt_porta.setText(Integer.toString(conexao.getPorta()));
-            txt_usuario.setText(conexao.getUsuario());
-            txt_senha.setText(conexao.getSenha());
-        });
     }    
         
     public void carregaConexoes(){
@@ -68,5 +93,34 @@ public class FXMLLoginController implements Initializable {
         conList = con.leConexoes();
         obConexoes = FXCollections.observableArrayList(conList);
         combo_config.setItems(obConexoes);
+    }
+    
+    public boolean conectaServidor(){
+        try {
+            jsch = new JSch();
+            System.out.println("\nEstabelecendo a Conexão...");
+            session = jsch.getSession(txt_usuario.getText(), txt_host.getText(), Integer.parseInt(txt_porta.getText()));
+            session.setPassword(txt_senha.getText());
+            session.setConfig("StrictHostKeyChecking", "no");
+
+            session.connect();
+            System.out.println("\nConexão estabelecia.");
+            System.out.println("\nCriando Canal SFTP...");
+            sftpChannel = (ChannelSftp) session.openChannel("sftp");
+            sftpChannel.connect();
+            System.out.println("\nCanal SFTP criado.");
+            
+            return true;
+        }
+        catch(Exception e){
+                System.err.print(e);
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText("Erro ao tentar ao conectar com o servidor.");
+                alert.setContentText("Por favor, verifique se as informações de conexão estão corretas e tente novamente.");
+                alert.showAndWait();
+                
+                return false;
+        }
     }
 }
