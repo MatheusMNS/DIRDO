@@ -25,6 +25,7 @@ public class DIRDO extends Application {
         
         stage.setScene(scene);
         stage.show();
+        stage.setTitle("DIRDO");
     }
 
     /**
