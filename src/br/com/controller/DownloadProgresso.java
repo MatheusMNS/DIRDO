@@ -7,6 +7,7 @@ package br.com.controller;
 
 import com.jcraft.jsch.SftpProgressMonitor;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -16,11 +17,13 @@ public class DownloadProgresso implements SftpProgressMonitor{
 
     private long percent = -1;
     private ProgressBar progress_download;
+    private Text txt_progress;
     long count=0;
     long max=0;
     
-    public DownloadProgresso(ProgressBar progress_download){
+    public DownloadProgresso(ProgressBar progress_download, Text txt_progress){
         this.progress_download = progress_download;
+        this.txt_progress = txt_progress;
     }
     
     public void init(int op, String src, String dest, long max){
@@ -49,7 +52,7 @@ public class DownloadProgresso implements SftpProgressMonitor{
 
      //_lbl_progresso.setText(percent + "% --- " + df.format((float)this.count/1000000) + " Mb de " + df.format((float)max/1000000) + "Mb");
      progress_download.setProgress((double)percent/100);
-        System.out.println("porcentagem: "+percent);
+        txt_progress.setText(""+percent+"%");
      
       return true;
     }

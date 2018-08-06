@@ -20,8 +20,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -35,6 +39,12 @@ public class FXMLDownloadController implements Initializable {
     private Conexao con;
     private ChannelSftp sftpChannel;
     private Alert alert;
+    
+    @FXML
+    private Button btn_download;
+    
+    @FXML
+    private TextArea txt_arquivos;
 
     @FXML
     private TextField txt_local = new TextField();
@@ -46,17 +56,39 @@ public class FXMLDownloadController implements Initializable {
     private ProgressBar progress_download;
     
     @FXML
+    private Text txt_progress;
+    
+    @FXML
+    private Label lbl_download;
+    
+    @FXML
+    private Label lbl_restantes;
+    
+    @FXML
     void handleDownloadAction(ActionEvent event) {
+        btn_download.setDisable(true);
+        String[] arquivos = txt_arquivos.getText().split("\\n");
         try {
             this.cdDiretorio();
-            System.out.println("botao Download: "+sftpChannel);
-            this.fazDownload();
+            
+            for(int i = 0 ; i < arquivos.length; i++){
+                lbl_restantes.setText(""+i+"/"+arquivos.length);
+                lbl_download.setText(arquivos[i]);
+                this.fazDownload(arquivos[i], i, arquivos.length);
+                txt_progress.setText("0%");
+                progress_download.setProgress(0.0F);
+            }
+
         } catch (SftpException ex) {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao tentar abrir o diretório remoto.");
             alert.showAndWait();
         }
+        
+        lbl_download.setText("NENHUM");
+        lbl_restantes.setText("0/0");
+        btn_download.setDisable(false);
     }
     
     @Override
@@ -93,28 +125,27 @@ public class FXMLDownloadController implements Initializable {
     public void cdDiretorio() throws SftpException{
         String dirRemoto = txt_remoto.getText();
         System.out.println("\nAbrindo diretório '" +dirRemoto+ "'");
-        System.out.println("CD diretorio: "+sftpChannel);
         sftpChannel.cd(dirRemoto);
         System.out.println("\nDiretório remoto aberto.");
     }
     
-    public void fazDownload(){
+    public void fazDownload(String arquivo, int restantes, int total){
         final DownloadServiceThread dst;
-        dst = new DownloadServiceThread("miub24-180805-033539-04-63307862.BATCH.004", con.getDirLocal(), sftpChannel, progress_download);
+        dst = new DownloadServiceThread(arquivo, txt_local.getText(), sftpChannel, progress_download, txt_progress);
 
         //Here you tell your progress indicator is visible only when the service is runing
         //progress_download.progressProperty().bind(dst.progressProperty());
         dst.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
-                System.out.println("DEU CERTO");
+                System.out.println("Status: OK");
             }
         });
 
         dst.setOnFailed(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
-                System.out.println("DEU ERRADO");
+                System.out.println("Status: ERRO");
             }
         });
         dst.start(); //here you start your service

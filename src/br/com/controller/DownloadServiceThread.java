@@ -12,6 +12,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -26,12 +27,17 @@ public class DownloadServiceThread extends Service<String>{
 
     @FXML
     private ProgressBar progress_download;
+    
+    @FXML
+    private Text txt_progress;
 
-    public DownloadServiceThread(String arquivo, String dirLocal, ChannelSftp sftpChannel, ProgressBar progress_download) {
+
+    public DownloadServiceThread(String arquivo, String dirLocal, ChannelSftp sftpChannel, ProgressBar progress_download, Text txt_progress) {
         this.arquivo = arquivo;
         this.dirLocal = dirLocal;
         this.sftpChannel = sftpChannel;
         this.progress_download = progress_download;
+        this.txt_progress = txt_progress;
     }
 
     @Override
@@ -39,14 +45,14 @@ public class DownloadServiceThread extends Service<String>{
         return new Task<String>() {
             @Override
             protected String call() throws Exception {
-                monitor = new DownloadProgresso(progress_download);
+                monitor = new DownloadProgresso(progress_download, txt_progress);
                 try{
                     sftpChannel.get(arquivo, dirLocal, monitor);
                 } catch(SftpException se){
                     System.out.println("ARQUIVO NÃO ENCONTRADO");    
                 }
                 
-                return "oi";
+                return "PRONTO";
             }
         };
     }
