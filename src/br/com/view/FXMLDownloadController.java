@@ -11,6 +11,8 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -74,6 +76,7 @@ public class FXMLDownloadController implements Initializable {
             for(int i = 0 ; i < arquivos.length; i++){
                 lbl_restantes.setText(""+i+"/"+arquivos.length);
                 lbl_download.setText(arquivos[i]);
+                
                 this.fazDownload(arquivos[i], i, arquivos.length);
                 txt_progress.setText("0%");
                 progress_download.setProgress(0.0F);

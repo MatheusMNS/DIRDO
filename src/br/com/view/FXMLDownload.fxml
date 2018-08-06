@@ -27,7 +27,7 @@
       <RowConstraints maxHeight="365.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="446.0" minHeight="10.0" prefHeight="410.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="446.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="446.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="446.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="446.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
@@ -42,7 +42,7 @@
       <TextArea fx:id="txt_arquivos" prefHeight="314.0" prefWidth="575.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="5" />
       <Label text="Fazendo Download de:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" />
       <Label fx:id="lbl_download" prefHeight="17.0" prefWidth="333.0" text="NENHUM" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-      <ProgressBar fx:id="progress_download" prefHeight="18.0" prefWidth="724.0" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="7" />
+      <ProgressBar fx:id="progress_download" prefHeight="29.0" prefWidth="624.0" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="7" />
       <Label fx:id="lbl_restantes" text="0/0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
       <Text fx:id="txt_progress" strokeType="OUTSIDE" strokeWidth="0.0" text="0%" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
    </children>
