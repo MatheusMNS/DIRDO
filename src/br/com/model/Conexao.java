@@ -14,6 +14,8 @@ public class Conexao {
     private int porta;
     private String usuario;
     private String senha;
+    private String dirLocal;
+    private String dirRemoto;
 
     public String getHost() {
         return host;
@@ -45,6 +47,22 @@ public class Conexao {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getDirLocal() {
+        return dirLocal;
+    }
+
+    public void setDirLocal(String dirLocal) {
+        this.dirLocal = dirLocal;
+    }
+
+    public String getDirRemoto() {
+        return dirRemoto;
+    }
+
+    public void setDirRemoto(String dirRemoto) {
+        this.dirRemoto = dirRemoto;
     }
 
     @Override

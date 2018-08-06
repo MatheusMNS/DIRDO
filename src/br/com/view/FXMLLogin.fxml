@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="240.0" prefWidth="271.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.controller.FXMLLoginController">
+<AnchorPane id="AnchorPane" prefHeight="240.0" prefWidth="271.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.view.FXMLLoginController">
    <children>
       <TextField fx:id="txt_porta" layoutX="212.0" layoutY="81.0" prefHeight="25.0" prefWidth="43.0" />
       <Label layoutX="14.0" layoutY="85.0" text="Host:" />
@@ -24,7 +24,7 @@
             <Font size="13.0" />
          </font></Text>
       <Button fx:id="btn_conectar" layoutX="179.0" layoutY="194.0" mnemonicParsing="false" onAction="#handleConectarAction" prefHeight="32.0" prefWidth="77.0" text="CONECTAR" />
-      <ComboBox fx:id="combo_config" layoutX="14.0" layoutY="45.0" onAction="#handleComboAction" prefHeight="25.0" prefWidth="240.0" />
+      <ComboBox fx:id="combo_config" layoutX="14.0" layoutY="45.0" onAction="#handleComboAction" prefHeight="25.0" prefWidth="240.0" promptText="Selecione uma conexão" />
       <PasswordField fx:id="txt_senha" layoutX="63.0" layoutY="155.0" prefHeight="25.0" prefWidth="193.0" />
       <ProgressIndicator fx:id="progress_conectar" layoutX="21.0" layoutY="194.0" prefHeight="32.0" prefWidth="43.0" progress="0.0" visible="false" />
       <Text fx:id="txt_conectar" layoutX="69.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="93.99999849498272" />

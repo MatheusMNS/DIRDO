@@ -12,6 +12,8 @@ and open the template in the editor.
         <porta>22</porta>
         <usuario>appusr</usuario>
         <senha>app123</senha>
+        <dirLocal>C:\DIRDO_Downloads</dirLocal>
+        <dirRemoto>/home/arborFX/FX_PRD/data/log/</dirRemoto>
     </conexao>
     
     <conexao>
@@ -19,5 +21,7 @@ and open the template in the editor.
         <porta>22</porta>
         <usuario>teste</usuario>
         <senha>123teste</senha>
+        <dirLocal>teste de diretorio</dirLocal>
+        <dirRemoto>outro teste</dirRemoto>
     </conexao>
 </conexoes>

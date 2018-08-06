@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.controller;
+package br.com.view;
 
+import br.com.controller.ConexaoController;
+import br.com.controller.LoginServiceThread;
 import br.com.model.Conexao;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,13 +22,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.text.Text;
 
 import com.jcraft.jsch.ChannelSftp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.stage.Stage;
 
 
 /**
@@ -38,7 +42,9 @@ public class FXMLLoginController implements Initializable {
 
     private List<Conexao> conList = new ArrayList<Conexao>();
     private ObservableList<Conexao> obConexoes;
-    private Conexao conexao;
+    private Conexao conexao = null;
+    
+    private FXMLDownloadController downloadScene;
     
     private ChannelSftp sftpChannel;
     
@@ -72,8 +78,6 @@ public class FXMLLoginController implements Initializable {
     void handleComboAction(ActionEvent event) {
         int index = combo_config.getSelectionModel().getSelectedIndex();
         
-        //progress_conectar.setVisible(false);
-        
         conexao = conList.get(index);
         txt_host.setText(conexao.getHost());
         txt_porta.setText(Integer.toString(conexao.getPorta()));
@@ -83,10 +87,8 @@ public class FXMLLoginController implements Initializable {
     
     @FXML
     void handleConectarAction(ActionEvent event) {
-        //boolean conectar; 
         progress_conectar.setVisible(true);
         progress_conectar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-        //conectar = conectaServidor();
         btn_conectar.setDisable(true);
         txt_conectar.setText("Aguarde...");
         final LoginServiceThread lst;
@@ -100,7 +102,18 @@ public class FXMLLoginController implements Initializable {
                 progress_conectar.setVisible(false);
                 txt_conectar.setText("");
                 sftpChannel = lst.getValue();   //here you get the return value of your service
-                System.out.println(sftpChannel.toString());
+                
+                // Abrindo a janela de downloads com o sucesso da conexão
+                preencheConexao(); // Verifica se o objeto Conexao possui valores, caso não, insere novos valores
+                downloadScene = new FXMLDownloadController();
+                
+                Stage stage = (Stage) btn_conectar.getScene().getWindow();
+                try {
+                    downloadScene.start(stage);
+                    downloadScene.getController().inicializaDados(conexao, sftpChannel);
+                } catch (Exception ex) {
+                    Logger.getLogger(FXMLLoginController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -132,5 +145,16 @@ public class FXMLLoginController implements Initializable {
         conList = con.leConexoes();
         obConexoes = FXCollections.observableArrayList(conList);
         combo_config.setItems(obConexoes);
+    }
+    
+    public void preencheConexao(){
+        if (conexao == null){
+            conexao.setDirLocal("");
+            conexao.setDirRemoto("");
+            conexao.setHost(txt_host.getText());
+            conexao.setPorta(Integer.parseInt(txt_porta.getText()));
+            conexao.setSenha(txt_senha.getText());
+            conexao.setUsuario(txt_usuario.getText());
+        }
     }
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane hgap="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" vgap="3.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+<GridPane hgap="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="650.0" vgap="3.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.view.FXMLDownloadController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0" prefWidth="10.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0" prefWidth="100.0" />
@@ -35,14 +35,14 @@
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Utilitário de Downloads via SFTP" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
       <Label text="Diretório Local:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
       <Label text="Diretório Remoto:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-      <TextField GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <TextField GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <Button mnemonicParsing="false" prefHeight="51.0" prefWidth="154.0" text="DOWNLOAD" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+      <TextField fx:id="txt_local" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <TextField fx:id="txt_remoto" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <Button fx:id="btn_download" mnemonicParsing="false" onAction="#handleDownloadAction" prefHeight="51.0" prefWidth="154.0" text="DOWNLOAD" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
       <Label text="Arquivos para Download:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
       <TextArea prefHeight="314.0" prefWidth="575.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="5" />
       <Label text="Fazendo Download de:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" />
       <Label text="NENHUM" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-      <ProgressBar prefHeight="18.0" prefWidth="632.0" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+      <ProgressBar fx:id="progress_download" prefHeight="18.0" prefWidth="724.0" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="7" />
       <Label text="0/0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
    </children>
 </GridPane>

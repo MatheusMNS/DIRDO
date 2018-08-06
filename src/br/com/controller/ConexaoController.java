@@ -60,6 +60,8 @@ public class ConexaoController {
             con.setPorta(Integer.parseInt(getTagValue("porta", element)));
             con.setUsuario(getTagValue("usuario", element));
             con.setSenha(getTagValue("senha", element));
+            con.setDirLocal(getTagValue("dirLocal", element));
+            con.setDirRemoto(getTagValue("dirRemoto", element));
         }
 
         return con;
