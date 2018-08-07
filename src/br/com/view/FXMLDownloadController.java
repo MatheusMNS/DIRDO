@@ -11,8 +11,6 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,8 +25,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -41,6 +41,9 @@ public class FXMLDownloadController implements Initializable {
     private Conexao con;
     private ChannelSftp sftpChannel;
     private Alert alert;
+    
+    @FXML
+    private GridPane gridPaneDownloads;
     
     @FXML
     private Button btn_download;
@@ -67,31 +70,41 @@ public class FXMLDownloadController implements Initializable {
     private Label lbl_restantes;
     
     @FXML
-    void handleDownloadAction(ActionEvent event) {
-        btn_download.setDisable(true);
-        String[] arquivos = txt_arquivos.getText().split("\\n");
+    void handleDownloadAction(ActionEvent event) {   
         try {
             this.cdDiretorio();
             
-            for(int i = 0 ; i < arquivos.length; i++){
-                lbl_restantes.setText(""+i+"/"+arquivos.length);
-                lbl_download.setText(arquivos[i]);
-                
-                this.fazDownload(arquivos[i], i, arquivos.length);
-                txt_progress.setText("0%");
-                progress_download.setProgress(0.0F);
-            }
+            final DownloadServiceThread dst;
+            dst = new DownloadServiceThread(btn_download, txt_local.getText(), sftpChannel, progress_download, txt_progress, txt_arquivos, lbl_download, lbl_restantes);
+            
+            //lbl_download.textProperty().bind(dst.messageProperty());
+            //Here you tell your progress indicator is visible only when the service is runing
+            //progress_download.progressProperty().bind(dst.progressProperty());
+            dst.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    String textoNaoEncontrados = dst.getValue();
+                    txt_arquivos.setText("LOG de arquivos não encontrados \n" + 
+                                         "------------------------------------------------ \n" + 
+                                            textoNaoEncontrados);
+                    System.out.println("Execução finalizada com sucesso.");
+                }
+            });
+
+            dst.setOnFailed(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    System.out.println("Execução finalizada com erros.");
+                }
+            });
+            dst.start(); //here you start your service
 
         } catch (SftpException ex) {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Erro ao tentar abrir o diretório remoto.");
             alert.showAndWait();
-        }
-        
-        lbl_download.setText("NENHUM");
-        lbl_restantes.setText("0/0");
-        btn_download.setDisable(false);
+        }        
     }
     
     @Override
@@ -106,11 +119,25 @@ public class FXMLDownloadController implements Initializable {
         FXMLDownloadController ctrl = (FXMLDownloadController)loader.getController();
         controller = ctrl;
         
-        Scene scene =  new Scene(root);
+        Scene scene =  new Scene(root, 650, 600);
         
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setResizable(false);
         stage.show();
-//        stage.setTitle(con.toString());
+        //stage.setTitle(con.toString());
+
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                System.out.println("\nFechando conexão com o servidor...");
+                getController().sftpChannel.exit();
+                getController().sftpChannel.disconnect();
+                System.out.println("\nConexão fechada.");
+                System.out.println("\nBye bye!");
+                System.exit(0);
+            }
+        });
 
     }
     
@@ -123,6 +150,8 @@ public class FXMLDownloadController implements Initializable {
         this.sftpChannel = sftpChannel;
         txt_local.setText(con.getDirLocal());
         txt_remoto.setText(con.getDirRemoto());
+        Stage stage = (Stage) gridPaneDownloads.getScene().getWindow();
+        stage.setTitle(con.toString());
     }
 
     public void cdDiretorio() throws SftpException{
@@ -130,28 +159,5 @@ public class FXMLDownloadController implements Initializable {
         System.out.println("\nAbrindo diretório '" +dirRemoto+ "'");
         sftpChannel.cd(dirRemoto);
         System.out.println("\nDiretório remoto aberto.");
-    }
-    
-    public void fazDownload(String arquivo, int restantes, int total){
-        final DownloadServiceThread dst;
-        dst = new DownloadServiceThread(arquivo, txt_local.getText(), sftpChannel, progress_download, txt_progress);
-
-        //Here you tell your progress indicator is visible only when the service is runing
-        //progress_download.progressProperty().bind(dst.progressProperty());
-        dst.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
-                System.out.println("Status: OK");
-            }
-        });
-
-        dst.setOnFailed(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
-                System.out.println("Status: ERRO");
-            }
-        });
-        dst.start(); //here you start your service
-
     }
 }
