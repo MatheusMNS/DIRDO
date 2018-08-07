@@ -87,52 +87,62 @@ public class FXMLLoginController implements Initializable {
     
     @FXML
     void handleConectarAction(ActionEvent event) {
-        progress_conectar.setVisible(true);
-        progress_conectar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-        btn_conectar.setDisable(true);
-        txt_conectar.setText("Aguarde...");
-        final LoginServiceThread lst;
-        lst = new LoginServiceThread(txt_host.getText(), Integer.parseInt(txt_porta.getText()), txt_usuario.getText(), txt_senha.getText());
+        if(txt_host.getText().equals("") || txt_porta.getText().equals("") || txt_usuario.getText().equals("") || txt_senha.getText().equals("") ||
+            txt_host.getText().equals(" ") || txt_porta.getText().equals(" ") || txt_usuario.getText().equals(" ") || txt_senha.getText().equals(" ")){
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText("Um ou mais campos estão preenchidos incorretamente.");
+            alert.setContentText("Por favor, verifique se as informações de conexão estão corretas e tente novamente.");
+            alert.showAndWait();
+        }
+        else{
+            progress_conectar.setVisible(true);
+            progress_conectar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            btn_conectar.setDisable(true);
+            txt_conectar.setText("Aguarde...");
+            final LoginServiceThread lst;
+            lst = new LoginServiceThread(txt_host.getText(), Integer.parseInt(txt_porta.getText()), txt_usuario.getText(), txt_senha.getText());
 
-        //Here you tell your progress indicator is visible only when the service is runing
-        //progress_conectar.visibleProperty().bind(lst.runningProperty());
-        lst.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
-                progress_conectar.setVisible(false);
-                txt_conectar.setText("");
-                sftpChannel = lst.getValue();   //here you get the return value of your service
-                
-                // Abrindo a janela de downloads com o sucesso da conexão
-                preencheConexao(); // Verifica se o objeto Conexao possui valores, caso não, insere novos valores
-                downloadScene = new FXMLDownloadController();
-                
-                Stage stage = (Stage) btn_conectar.getScene().getWindow();
-                try {
-                    downloadScene.start(stage);
-                    downloadScene.getController().inicializaDados(conexao, sftpChannel);
-                } catch (Exception ex) {
-                    Logger.getLogger(FXMLLoginController.class.getName()).log(Level.SEVERE, null, ex);
+            //Here you tell your progress indicator is visible only when the service is runing
+            //progress_conectar.visibleProperty().bind(lst.runningProperty());
+            lst.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    progress_conectar.setVisible(false);
+                    txt_conectar.setText("");
+                    sftpChannel = lst.getValue();   //here you get the return value of your service
+
+                    // Abrindo a janela de downloads com o sucesso da conexão
+                    preencheConexao(); // Verifica se o objeto Conexao possui valores, caso não, insere novos valores
+                    downloadScene = new FXMLDownloadController();
+
+                    Stage stage = (Stage) btn_conectar.getScene().getWindow();
+                    try {
+                        downloadScene.start(stage);
+                        downloadScene.getController().inicializaDados(conexao, sftpChannel);
+                    } catch (Exception ex) {
+                        Logger.getLogger(FXMLLoginController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
-        });
+            });
 
-        lst.setOnFailed(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
-                progress_conectar.setVisible(false);
-                txt_conectar.setText("");
-                
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao tentar ao conectar com o servidor.");
-                alert.setContentText("Por favor, verifique se as informações de conexão estão corretas e tente novamente.");
-                alert.showAndWait();
-                btn_conectar.setDisable(false);
-                txt_conectar.setText("");
-            }
-        });
-        lst.start(); //here you start your service
+            lst.setOnFailed(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    progress_conectar.setVisible(false);
+                    txt_conectar.setText("");
+
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao tentar ao conectar com o servidor.");
+                    alert.setContentText("Por favor, verifique se as informações de conexão estão corretas e tente novamente.");
+                    alert.showAndWait();
+                    btn_conectar.setDisable(false);
+                    txt_conectar.setText("");
+                }
+            });
+            lst.start(); //here you start your service
+        }
     }
 
     @Override
