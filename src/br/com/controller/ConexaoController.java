@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 public class ConexaoController {
     
     public List<Conexao> leConexoes(){
-        String filePath = "src\\br\\com\\arquivos\\config.xml";
+        String filePath = "config.xml";
         File xmlFile = new File(filePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;

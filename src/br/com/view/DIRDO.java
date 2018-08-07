@@ -21,7 +21,7 @@ public class DIRDO extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLLogin.fxml"));
         
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 271, 240);
         
         stage.setScene(scene);
         stage.setResizable(false);
