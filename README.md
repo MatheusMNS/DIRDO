@@ -1,5 +1,5 @@
 # DIRDO
-Utilitário de downloads em servidores remotos utilizando o protocolo SFTP.
+Utilitário de downloads em servidores remotos utilizando os protocolos SSH2 e SFTP.
 
 --------------------------------------------------------------------------
 
