@@ -6,15 +6,7 @@ and open the template in the editor.
 -->
 
 
-<conexoes> 
-    <conexao>
-        <host>(HOST)</host>
-        <porta>(PORT)</porta>
-        <usuario>(USER)</usuario>
-        <senha>(PASSWORD)</senha>
-        <dirLocal>(DIRECTORY OF DOWNLOADS)</dirLocal>
-        <dirRemoto>(DIRECTORY OF THE REMOTE SERVER)</dirRemoto>
-    </conexao>   
+<conexoes>  
     <conexao>
         <host>192.168.0.2</host>
         <porta>22</porta>

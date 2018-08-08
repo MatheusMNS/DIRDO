@@ -85,7 +85,7 @@ public class FXMLDownloadController implements Initializable {
                 public void handle(WorkerStateEvent workerStateEvent) {
                     String textoNaoEncontrados = dst.getValue();
                     txt_arquivos.setText("LOG de arquivos não encontrados \n" + 
-                                         "------------------------------------------------ \n" + 
+                                         "------------------------------------------- \n" + 
                                             textoNaoEncontrados);
                     System.out.println("Execução finalizada com sucesso.");
                 }

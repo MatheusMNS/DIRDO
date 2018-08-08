@@ -54,13 +54,13 @@ public class FXMLLoginController implements Initializable {
     private ComboBox<Conexao> combo_config;
 
     @FXML
+    private TextField txt_host;
+    
+    @FXML
     private TextField txt_porta;
 
     @FXML
     private TextField txt_usuario;
-
-    @FXML
-    private TextField txt_host;
 
     @FXML
     private PasswordField txt_senha;
