@@ -6,16 +6,7 @@ and open the template in the editor.
 -->
 
 
-<conexoes>
-    <conexao>
-        <host>10.32.9.36</host>
-        <porta>22</porta>
-        <usuario>appusr</usuario>
-        <senha>app123</senha>
-        <dirLocal>C:\DIRDO_Downloads</dirLocal>
-        <dirRemoto>/home/arborFX/FX_PRD/data/log/</dirRemoto>
-    </conexao>
-    
+<conexoes>   
     <conexao>
         <host>192.168.0.2</host>
         <porta>22</porta>
