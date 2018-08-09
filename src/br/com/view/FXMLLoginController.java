@@ -126,7 +126,7 @@ public class FXMLLoginController implements Initializable {
             txt_conectar.setText("Aguarde...");
             this.preencheConexao(); // Verifica se o objeto Conexao possui valores, caso não, insere novos valores
             final LoginServiceThread lst;
-            lst = new LoginServiceThread(conexao);
+            lst = new LoginServiceThread(txt_host.getText(), Integer.parseInt(txt_porta.getText()), txt_usuario.getText(), txt_senha.getText());
             //Here you tell your progress indicator is visible only when the service is runing
             //progress_conectar.visibleProperty().bind(lst.runningProperty());
             lst.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
