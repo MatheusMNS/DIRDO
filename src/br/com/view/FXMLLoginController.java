@@ -181,17 +181,13 @@ public class FXMLLoginController implements Initializable {
     }
     
     public void preencheConexao(){
-        if (conexao == null){
+        /*if (conexao == null){
             conexao.setDirLocal("");
             conexao.setDirRemoto("");
             conexao.setHost(txt_host.getText());
             conexao.setPorta(Integer.parseInt(txt_porta.getText()));
             conexao.setSenha(txt_senha.getText());
             conexao.setUsuario(txt_usuario.getText());
-        }
-        else{
-            int index = combo_config.getSelectionModel().getSelectedIndex();
-            conexao = conList.get(index);
-        }
+        }*/
     }
 }
