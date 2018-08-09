@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.Alert;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -47,6 +48,8 @@ import org.xml.sax.SAXException;
  * @author matheusm
  */
 public class ConexaoController {
+    
+    private Alert alert;
     
     public List<Conexao> leConexoes(){
         String filePath = "config.xml";
@@ -67,6 +70,11 @@ public class ConexaoController {
 
             return conList;
         } catch (SAXException | ParserConfigurationException | IOException e1) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro ao abrir DIRDO");
+            alert.setHeaderText("Não foi possível carregar o arquivo 'config.xml'");
+            alert.setContentText("Por favor, verifique se o arquivo está no mesmo padrão do arquivo disponibilizado no release deste software.");
+            alert.showAndWait();
             e1.printStackTrace();
         }
         
