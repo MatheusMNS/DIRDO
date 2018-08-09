@@ -141,11 +141,10 @@ public class FXMLDownloadController implements Initializable {
         FXMLDownloadController ctrl = (FXMLDownloadController)loader.getController();
         controller = ctrl;
         
-        Scene scene =  new Scene(root, 650, 600);
+        Scene scene =  new Scene(root);
         
         stage.setScene(scene);
         stage.centerOnScreen();
-        stage.setResizable(false);
         stage.show();
         //stage.setTitle(con.toString());
 
