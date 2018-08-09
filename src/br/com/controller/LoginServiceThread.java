@@ -27,6 +27,7 @@
  */
 package br.com.controller;
 
+import br.com.model.Conexao;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
@@ -44,18 +45,12 @@ public class LoginServiceThread extends Service<ChannelSftp>{
     private Session session;
     private ChannelSftp sftpChannel;
     
-    private String host;
-    private int porta;
-    private String usuario;
-    private String senha;
+    private Conexao con;
     
     private Alert alert;
     
-    public LoginServiceThread(String host, int porta, String usuario, String senha) {
-        this.host = host;
-        this.porta = porta;
-        this.usuario = usuario;
-        this.senha = senha;
+    public LoginServiceThread(Conexao con) {
+        this.con = con;
     }
     
    @Override
@@ -67,8 +62,8 @@ public class LoginServiceThread extends Service<ChannelSftp>{
                 try {
                     jsch = new JSch();
                     System.out.println("Estabelecendo a Conexão...");
-                    session = jsch.getSession(usuario, host, porta);
-                    session.setPassword(senha);
+                    session = jsch.getSession(con.getUsuario(), con.getHost(), con.getPorta());
+                    session.setPassword(con.getSenha());
                     session.setConfig("StrictHostKeyChecking", "no");
 
                     session.connect();

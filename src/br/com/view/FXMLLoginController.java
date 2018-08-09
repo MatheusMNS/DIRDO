@@ -122,9 +122,9 @@ public class FXMLLoginController implements Initializable {
             progress_conectar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
             btn_conectar.setDisable(true);
             txt_conectar.setText("Aguarde...");
+            this.preencheConexao(); // Verifica se o objeto Conexao possui valores, caso não, insere novos valores
             final LoginServiceThread lst;
-            lst = new LoginServiceThread(txt_host.getText(), Integer.parseInt(txt_porta.getText()), txt_usuario.getText(), txt_senha.getText());
-
+            lst = new LoginServiceThread(conexao);
             //Here you tell your progress indicator is visible only when the service is runing
             //progress_conectar.visibleProperty().bind(lst.runningProperty());
             lst.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -135,7 +135,6 @@ public class FXMLLoginController implements Initializable {
                     sftpChannel = lst.getValue();   //here you get the return value of your service
 
                     // Abrindo a janela de downloads com o sucesso da conexão
-                    preencheConexao(); // Verifica se o objeto Conexao possui valores, caso não, insere novos valores
                     downloadScene = new FXMLDownloadController();
 
                     Stage stage = (Stage) btn_conectar.getScene().getWindow();
