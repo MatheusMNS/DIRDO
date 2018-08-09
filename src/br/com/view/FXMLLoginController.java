@@ -105,6 +105,8 @@ public class FXMLLoginController implements Initializable {
         txt_porta.setText(Integer.toString(conexao.getPorta()));
         txt_usuario.setText(conexao.getUsuario());
         txt_senha.setText(conexao.getSenha());
+        
+        this.preencheConexao();
     }
     
     @FXML
@@ -186,6 +188,10 @@ public class FXMLLoginController implements Initializable {
             conexao.setPorta(Integer.parseInt(txt_porta.getText()));
             conexao.setSenha(txt_senha.getText());
             conexao.setUsuario(txt_usuario.getText());
+        }
+        else{
+            int index = combo_config.getSelectionModel().getSelectedIndex();
+            conexao = conList.get(index);
         }
     }
 }
