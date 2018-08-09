@@ -3,7 +3,12 @@ Utilitário de downloads em servidores remotos utilizando os protocolos SSH2 e S
 
 --------------------------------------------------------------------------
 
-Este projeto foi construído utilizando a biblioteca JSch e é disponibilizado sob a mesma licença (ver arquivo LICENSE). 
+Ferramentas utilizadas para a construção deste projeto:
+* Netbeans IDE 8.2
+* JavaFX com SceneBuilder
+* Biblioteca JSch para comunicação com servidores remotos
+
+Este projeto é disponibilizado sob a mesma licença da biblioteca JSch (ver arquivo LICENSE). 
 
 O arquivo binário disponibilizado foi compilado em um único arquivo jar seguindo o seguinte tutorial:
 https://dzone.com/articles/how-build-fat-jar-using
