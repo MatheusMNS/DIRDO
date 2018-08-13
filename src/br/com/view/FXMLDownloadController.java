@@ -145,6 +145,7 @@ public class FXMLDownloadController implements Initializable {
         
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setResizable(true);
         stage.show();
         //stage.setTitle(con.toString());
 
