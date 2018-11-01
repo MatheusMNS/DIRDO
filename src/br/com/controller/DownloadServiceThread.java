@@ -82,7 +82,7 @@ public class DownloadServiceThread extends Service<String>{
         return new Task<String>() {
             @Override
             protected String call() throws Exception {
-                String naoEncontrados = null;
+                String naoEncontrados = "";
                 btn_download.setDisable(true);
                 monitor = new DownloadProgresso(progress_download, txt_progress);
                 for(int i = 0 ; i < arquivos.length; i++){

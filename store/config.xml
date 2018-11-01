@@ -34,7 +34,7 @@
     <conexao>
         <host>192.168.0.2</host>
         <porta>22</porta>
-        <usuario>userExample</usuario>
+        <usuario>user</usuario>
         <senha>123user@</senha>
         <dirLocal>C:\this\is\your\local\directory</dirLocal>
         <dirRemoto>/this/is/the/remote/directory/server</dirRemoto>
