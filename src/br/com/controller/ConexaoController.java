@@ -86,6 +86,7 @@ public class ConexaoController {
         Conexao con = new Conexao();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element element = (Element) node;
+            con.setTitulo(getTagValue("titulo", element));
             con.setHost(getTagValue("host", element));
             con.setPorta(Integer.parseInt(getTagValue("porta", element)));
             con.setUsuario(getTagValue("usuario", element));
