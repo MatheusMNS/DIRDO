@@ -32,6 +32,7 @@
 
 <conexoes>  
     <conexao>
+		<titulo>titulo teste</titulo>
         <host>192.168.0.2</host>
         <porta>22</porta>
         <usuario>user</usuario>
