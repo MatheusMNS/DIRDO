@@ -342,7 +342,7 @@
 
 .content-background {
 	-fx-background-color: rgb(40.0, 40.0, 40.0, 40.0); /* ANTES: white */
-	-fx-background-radius: 0.0 0.0 11.0 11.0;
+	-fx-background-radius: 0.0 0.0 0.0 0.0;
 	-fx-padding: 0 10 10 10;
 }
 

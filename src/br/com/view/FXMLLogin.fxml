@@ -17,12 +17,12 @@
       <TextField fx:id="txt_usuario" layoutX="76.0" layoutY="139.0" prefHeight="37.0" prefWidth="254.0" styleClass="text-field" />
       <PasswordField fx:id="txt_senha" layoutX="76.0" layoutY="182.0" prefHeight="37.0" prefWidth="254.0" />
       <Button fx:id="btn_conectar" layoutX="190.0" layoutY="231.0" mnemonicParsing="false" onAction="#handleConectarAction" prefHeight="37.0" prefWidth="139.0" styleClass="button-raised" text="CONECTAR" />
-      <Label layoutX="17.0" layoutY="106.0" styleClass="label-bright" text="Host:" />
+      <Label layoutX="17.0" layoutY="106.0" styleClass="text" text="Host:" />
       <Label layoutX="222.0" layoutY="102.0" styleClass="label-bright" text="Porta:" />
       <Label layoutX="15.0" layoutY="147.0" styleClass="label-bright" text="Usuário:" />
       <Label layoutX="13.0" layoutY="190.0" styleClass="label-bright" text="Senha:" />
       <ProgressIndicator fx:id="progress_conectar" layoutX="18.0" layoutY="231.0" prefHeight="37.0" prefWidth="51.0" progress="0.0" visible="false" />
       <Text fx:id="txt_conectar" fill="#6f6f6f" layoutX="85.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title-label" wrappingWidth="93.99999849498272" />
-      <Label layoutX="94.0" layoutY="14.0" styleClass="title-label" text="UTILITÁRIO DE DOWNLOADS" />
+      <Label layoutX="114.0" layoutY="9.0" styleClass="title-label" text="DIRDO - Utilitário SSH" />
    </children>
 </AnchorPane>
